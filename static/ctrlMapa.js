@@ -29,7 +29,7 @@ var map = L.map('map', {
   });
 
 // Carrega todas as camadas do geoserver
-var ip = '10.6.10.221:8080';
+var ip = '35.184.49.136:8080';
   axios.get(`http://${ip}/geoserver/ows?service=wfs&version=2.0.0&request=GetCapabilities`).then(e => {
     $xml = $($.parseXML(e.data)),
       title = $xml.find("Title");
