@@ -1,3 +1,4 @@
+
 var baseMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
 var landsar2008 = L.tileLayer('http://www.car.gov.br/mosaicos/mosaicos_landsat_2008/{z}/{x}/{-y}.jpg');
 var rapideye2011 = L.tileLayer('https://www.car.gov.br/mosaicos/{z}/{x}/{-y}.jpg');
@@ -13,20 +14,20 @@ var baseLayers = {
     "BASEMAP": baseMap,
     "Landsar 2008": landsar2008,
     "Spot 2008": spot2008,
-    "Rapideye 2011": rapideye2011,
-    "Rapideye 2012": rapideye2012,
-    "Rapideye 2013": rapideye2013,
-    "Rapideye 2014": rapideye2014,
-    "Landsar 2015": ladsat2015,
-    "Sentinel 2016": sentinel2016,
-    "Landsar 2017": ladsat2017,
+    //"Rapideye 2011": rapideye2011,
+    //"Rapideye 2012": rapideye2012,
+    //"Rapideye 2013": rapideye2013,
+    //"Rapideye 2014": rapideye2014,
+    //"Landsar 2015": ladsat2015,
+    //"Sentinel 2016": sentinel2016,
+    //"Landsar 2017": ladsat2017,
 };
 
 var map = L.map('map', {
-    center: [-11, -63],
-    zoom: 7,
-    layers: [baseMap]
-  });
+  center: [-11, -63],
+  zoom: 7,
+  layers: [baseMap]
+});
 
 // Carrega todas as camadas do geoserver
 var ip = '35.184.49.136:8080';
@@ -43,14 +44,12 @@ var ip = '35.184.49.136:8080';
       layerGroups[element.innerHTML] = L.layerGroup()
       axios.get(`http://${ip}/geoserver/${nomeAmbiente[0]}/ows?service=WFS
       &version=1.0.0&request=GetFeature&typeName=${nomeCamada}&outputFormat=application%2Fjson`).then(e =>{
-        layerGroups[element.innerHTML].addLayer(L.geoJson(e.data, {}))
+        layerGroups[element.innerHTML].addLayer(L.geoJson(e.data, {style: style}))
       })
     });
-  L.control.layers(layerGroups).addTo(map);
+  L.control.layers(null,layerGroups, {collapsed: false }).addTo(map);
 })
-var wmsLayer = L.tileLayer.wms(`http://${ip}/geoserver/gwc/service?`, {
-    layers: 'base_fundiaria'
-}).addTo(map);
+
 
     
 // Add KML do MAP
@@ -63,9 +62,11 @@ async function readText(event) {
   track.addTo(map)
 }
 
-L.control.layers(baseLayers).addTo(map);
+L.control.layers(baseLayers,null, {collapsed: false }).addTo(map);
+L.control.scale().addTo(map);
 
 map.pm.addControls({
   position: 'topleft',
   drawCircle: false,
 });
+
