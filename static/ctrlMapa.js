@@ -70,3 +70,12 @@ map.pm.addControls({
   drawCircle: false,
 });
 
+var wmsLayer = L.tileLayer.wms('http://35.184.49.136:8080/geoserver/ows?', {
+    layers: 'UCs_Estaduais',
+    format: 'image/png',
+    transparent: 'true',
+    opacity: 0.5
+
+
+
+}).addTo(map);
