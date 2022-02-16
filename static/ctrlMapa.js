@@ -20,7 +20,7 @@ var baseLayers = {
     //"Rapideye 2014": rapideye2014,
     //"Landsar 2015": ladsat2015,
     //"Sentinel 2016": sentinel2016,
-    //"Landsar 2017": ladsat2017,
+    "Landsar 2017": ladsat2017,
 };
 
 var map = L.map('map', {
@@ -43,39 +43,32 @@ var ip = '35.184.49.136:8080';
      	
       layerGroups[element.innerHTML] = L.layerGroup()
       axios.get(`http://${ip}/geoserver/${nomeAmbiente[0]}/ows?service=WFS
-      &version=1.0.0&request=GetFeature&typeName=${nomeCamada}&outputFormat=application%2Fjson`).then(e =>{
+      &version=1.0.0&request=GetFeature&typeName=${nomeCamada}&outputFormat=application%2Fjson`).then(e => {
         layerGroups[element.innerHTML].addLayer(L.geoJson(e.data, {style: style}))
       })
     });
   L.control.layers(null,layerGroups, {collapsed: false }).addTo(map);
 })
 
-
-    
 // Add KML do MAP
-async function readText(event) {
-  const file = event.target.files.item(0)
-  const kmltext = await file.text();
-  const parser = new DOMParser();
-  const kml = parser.parseFromString(kmltext, 'text/xml');
-  const track = new L.KML(kml);
-  track.addTo(map)
-}
+// async function readText(event) {
+//   const file = event.target.files.item(0)
+//   const kmltext = await file.text();
+//   const parser = new DOMParser();
+//   const kml = parser.parseFromString(kmltext, 'text/xml');
+//   const track = new L.KML(kml);
+//   track.addTo(map)
+// }
+// map.pm.addControls({ position: 'topleft', drawCircle: false,});
 
 L.control.layers(baseLayers,null, {collapsed: false }).addTo(map);
 L.control.scale().addTo(map);
 
-map.pm.addControls({
-  position: 'topleft',
-  drawCircle: false,
-});
+
 
 var wmsLayer = L.tileLayer.wms('http://35.184.49.136:8080/geoserver/ows?', {
     layers: 'UCs_Estaduais',
     format: 'image/png',
     transparent: 'true',
     opacity: 0.5
-
-
-
 }).addTo(map);
