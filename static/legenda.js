@@ -1,4 +1,3 @@
-
 function getColor(layer) {
     return layer == 'ucs_e' ? '#800026' :
            layer == 'ucs_f'  ? '#BD0026' :
